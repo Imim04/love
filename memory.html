@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Love 💕</title>
+
+<style>
+body{
+  margin:0;
+  background:#ffe0ec;
+  font-family:sans-serif;
+  text-align:center;
+}
+
+h1{
+  margin-top:20px;
+  font-size:28px;
+}
+
+#info{
+  font-size:20px;
+  margin-bottom:15px;
+}
+
+/* 🔥 ทำกริดใหญ่ขึ้น */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3, 120px);
+  gap:18px;
+  justify-content:center;
+  margin-top:10px;
+}
+
+/* 🔥 การ์ดใหญ่ขึ้น */
+.card{
+  width:120px;
+  height:120px;
+  border-radius:20px;
+  overflow:hidden;
+  background:#ff9ecb;
+  cursor:pointer;
+  position:relative;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  transition:transform 0.2s;
+}
+
+.card:hover{
+  transform:scale(1.05);
+}
+
+.card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.card.flipped img{
+  display:block;
+}
+
+.card::before{
+  content:"💖";
+  position:absolute;
+  font-size:35px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+
+.card.flipped::before{
+  display:none;
+}
+
+/* 📱 มือถือ */
+@media(max-width:768px){
+  .grid{
+    grid-template-columns:repeat(3, 100px);
+  }
+  .card{
+    width:100px;
+    height:100px;
+  }
+}
+#musicBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  border:none;
+  background:white;
+  font-size:22px;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  transition:0.3s;
+  z-index:999;
+}
+
+#musicBtn:hover{
+  transform:scale(1.1);
+}
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+
+.popup-box{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  width:300px;
+  animation:pop 0.4s ease;
+}
+
+.popup-box h2{
+  margin-bottom:20px;
+}
+
+.popup-box button{
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:#ff9ecb;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+
+@keyframes pop{
+  from{transform:scale(0.5); opacity:0;}
+  to{transform:scale(1); opacity:1;}
+}
+</style>
+</head>
+<body>
+
+<h1>จับคู่รูปของเรา 💕</h1>
+<p id="info">เวลา: 35 | พลาดได้ 5 ครั้ง</p>
+
+<div class="grid" id="grid"></div>
+<audio id="bgMusic" loop>
+  <source src="u.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn">🎵</button>
+
+<script>
+const images = [
+  "photo4.jpg",
+  "photo5.jpg",
+  "photo6.jpg",
+  "photo7.jpg",
+  "photo8.jpg",
+  "photo9.jpg"
+];
+
+let cards = [...images, ...images];
+cards.sort(()=>0.5 - Math.random());
+
+const grid = document.getElementById("grid");
+let first = null;
+let second = null;
+let lock = false;
+let matched = 0;
+let mistakes = 0;
+const maxMistakes = 5;
+
+
+cards.forEach(src=>{
+  const card = document.createElement("div");
+  card.classList.add("card");
+
+  const img = document.createElement("img");
+  img.src = src;
+
+  card.appendChild(img);
+  card.dataset.value = src;
+
+  card.onclick = function(){
+    if(lock || card.classList.contains("flipped")) return;
+
+    card.classList.add("flipped");
+
+    if(!first){
+      first = card;
+    }else{
+      second = card;
+      lock = true;
+
+      if(first.dataset.value === second.dataset.value){
+        matched++;
+        heartEffect();
+        resetTurn();
+
+        if(matched === images.length){
+          setTimeout(()=>{
+           showResult("เก่งมากเลยยไอ้อ้วนโอม 💖", true);
+          },500);
+        }
+
+      }else{
+        mistakes++;
+        if(mistakes >= 5){
+          setTimeout(()=>{
+           showResult("เล่นใหม่เลย กาก", false);
+          },500);
+        }
+
+        setTimeout(()=>{
+          first.classList.remove("flipped");
+          second.classList.remove("flipped");
+          resetTurn();
+        },700);
+      }
+    }
+  };
+
+  grid.appendChild(card);
+});
+
+function resetTurn(){
+  first=null;
+  second=null;
+  lock=false;
+}
+
+function heartEffect(){
+  const heart=document.createElement("div");
+  heart.innerHTML="💗";
+  heart.style.position="fixed";
+  heart.style.left="50%";
+  heart.style.top="50%";
+  heart.style.fontSize="40px";
+  heart.style.transform="translate(-50%,-50%)";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),500);
+}
+function showResult(message, isWin){
+  document.getElementById("resultText").innerText = message;
+
+  const btn = document.querySelector("#resultPopup button");
+
+  if(isWin){
+    btn.innerText = "กลับหน้าแรก 💕";
+    btn.onclick = function(){
+      window.location.href = "index.html";
+    };
+  }else{
+    btn.innerText = "เล่นอีกครั้ง 💗";
+    btn.onclick = function(){
+      window.location.reload();
+    };
+  }
+
+  document.getElementById("resultPopup").style.display = "flex";
+}
+
+function closeResult(){
+  document.body.style.transition = "opacity 0.6s";
+  document.body.style.opacity = "0";
+
+  setTimeout(()=>{
+    window.location.href = "index.html";
+  },600);
+}
+// Timer
+let timeLeft = 40;
+const info = document.getElementById("info");
+
+const timer = setInterval(()=>{
+  timeLeft--;
+  info.innerText = "เวลา: " + timeLeft + " | พลาดได้ " + (5-mistakes) + " ครั้ง";
+
+  if(timeLeft <= 0){
+    clearInterval(timer);
+   showResult("โดนลงโทษแล้วว 😆 ลองใหม่!");
+  }
+},1000);
+</script>
+<script>
+const music = document.getElementById("bgMusic");
+const btn = document.getElementById("musicBtn");
+
+btn.addEventListener("click", function(){
+  if(music.paused){
+    music.play();
+    btn.innerHTML = "🔊";
+  } else {
+    music.pause();
+    btn.innerHTML = "🔇";
+  }
+});
+
+// ให้แตะตรงไหนก็เริ่มเพลงได้ 1 ครั้ง
+document.addEventListener("click", function startMusic(){
+  music.play();
+}, { once:true });
+</script>
+<div id="resultPopup" class="popup">
+  <div class="popup-box">
+    <h2 id="resultText"></h2>
+    <button onclick="closeResult()">เล่นอีกครั้ง 💕</button>
+  </div>
+</div>
+</body>
+</html>
