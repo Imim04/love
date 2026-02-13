@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Forever? </title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="center">
+
+<h1>จะอยู่ด้วยกันต่อไหม </h1>
+
+<div class="btn-group">
+  <button class="btn yes" onclick="startPrank()">เอาสิ </button>
+  <button class="btn" onmouseover="runAway(this)">ไม่เอา </button>
+  <button class="btn" onmouseover="runAway(this)">ขอคิดก่อน </button>
+</div>
+
+<div id="prankBox" class="popup">
+  <div class="popup-content">
+    <h2 id="prankText">แน่ใจนะ </h2>
+    <button id="finalBtn" class="btn" onclick="nextStep()">เอาดี</button>
+
+  </div>
+</div>
+<!-- 🎵 Romantic Music -->
+<audio id="bgMusic" loop>
+  <source src="u.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn">🎵</button>
+
+<script src="script.js"></script>
+</body>
+</html>

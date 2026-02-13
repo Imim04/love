@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Memories</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<h1 class="page-title">ความทรงจำของเรา 💕</h1>
+
+<div class="gallery">
+  <img src="photo1.jpg" 
+       data-text="เราไปนอนด้วยกัน💕"
+       onclick="openPopup(this)">
+
+  <img src="photo2.jpg" 
+       data-text="วันแรกที่เค้าไปดูเธอเตะบอล 🥰"
+       onclick="openPopup(this)">
+
+  <img src="photo3.jpg" 
+       data-text="อันนี้เค้าชอบมากตอนไปตลาดพลู ❤️"
+       onclick="openPopup(this)">
+</div>
+
+
+<!-- Popup -->
+<div id="popup" class="popup" onclick="closePopup()">
+  <div class="popup-content" onclick="event.stopPropagation()">
+    <img id="popup-img">
+    <p id="popup-text"></p>
+  </div>
+</div>
+<div class="btn-wrapper">
+  <a href="final.html" class="btn">ไปหน้าสุดท้าย 💍</a>
+</div>
+<!-- 🎵 Romantic Music -->
+<audio id="bgMusic" loop>
+  <source src="u.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn">🎵</button>
+
+<script src="script.js"></script>
+</body>
+</html>
