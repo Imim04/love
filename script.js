@@ -64,6 +64,8 @@ function heartExplosion(){
   }
 }
 /* 🎵 Music Control */
+/* 🎵 Music Control แบบเล่นต่อเนื่อง */
+
 document.addEventListener("DOMContentLoaded", function(){
 
   const music = document.getElementById("bgMusic");
@@ -71,7 +73,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
   if(!music || !musicBtn) return;
 
-  // ใช้ sessionStorage แทน localStorage
   let savedTime = sessionStorage.getItem("musicTime");
   if(savedTime){
     music.currentTime = parseFloat(savedTime);
@@ -84,34 +85,36 @@ document.addEventListener("DOMContentLoaded", function(){
     musicBtn.innerHTML = "🔊";
   }
 
-  document.body.addEventListener("click", function startMusic(){
+  document.addEventListener("click", function(){
     if(!isPlaying){
       music.volume = 0.7;
       music.play();
       isPlaying = true;
       musicBtn.innerHTML = "🔊";
-      sessionStorage.setItem("musicPlaying", "true");
+      sessionStorage.setItem("musicPlaying","true");
     }
   }, { once:true });
 
   musicBtn.addEventListener("click", function(e){
     e.stopPropagation();
+
     if(isPlaying){
       music.pause();
-      musicBtn.innerHTML="🔇";
-      sessionStorage.setItem("musicPlaying", "false");
+      musicBtn.innerHTML = "🔇";
+      sessionStorage.setItem("musicPlaying","false");
     } else {
       music.play();
-      musicBtn.innerHTML="🔊";
-      sessionStorage.setItem("musicPlaying", "true");
+      musicBtn.innerHTML = "🔊";
+      sessionStorage.setItem("musicPlaying","true");
     }
+
     isPlaying = !isPlaying;
   });
 
-  // บันทึกเวลาทุก 1 วิ
   setInterval(()=>{
     sessionStorage.setItem("musicTime", music.currentTime);
   },1000);
+
 
 });
 function goHome(){
@@ -149,7 +152,7 @@ function nextStep(){
   step++;
 
   if(step === 1){
-    text.innerHTML = "คิดดีแล้วใช่มั้ย 😏";
+    text.innerHTML = "คิดดีแล้วใช่มั้ย ";
   }
 
   else if(step === 2){
@@ -157,7 +160,7 @@ function nextStep(){
   }
 
   else if(step === 3){
-    text.innerHTML = "⚠ ERROR 404: แฟนน่ารักเกินไป 🤯";
+    text.innerHTML = "⚠ ERROR 404: แฟนน่ารักเกินไป ทำไงดีอ่ะ ";
   }
 
   else if(step === 4){
@@ -188,9 +191,13 @@ function heartExplosion(){
   }
 }
 function kissAndGo(){
-  sessionStorage.clear();
-  window.location.replace("index.html");
+  document.body.style.transition = "opacity 0.8s";
+  document.body.style.opacity = "0";
 
+  setTimeout(()=>{
+    window.location.href = "index.html";
+  },800);
+}
 
   // หยุดเพลงก่อนกลับหน้า
   if(music){
@@ -205,7 +212,7 @@ function kissAndGo(){
     sessionStorage.clear();
     window.location.replace("memories.html");
   },800);
-}
+
 document.addEventListener("DOMContentLoaded", function(){
   const music = document.getElementById("bgMusic");
 
