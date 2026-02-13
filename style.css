@@ -308,3 +308,27 @@ body::before{
   background:#e48ca6;
   color:white;
 }
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .gallery {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gallery img {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+
+  .popup-content {
+    width: 90%;
+  }
+
+  .btn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}

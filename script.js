@@ -201,6 +201,18 @@ function kissAndGo(){
 
   setTimeout(()=>{
     sessionStorage.clear();
-    window.location.href = "index.html";
+    window.location.replace("memories.html");
   },800);
 }
+document.addEventListener("DOMContentLoaded", function(){
+  const music = document.getElementById("bgMusic");
+
+  if(sessionStorage.getItem("musicPlaying") === "true"){
+    music.play();
+  }
+
+  document.addEventListener("click", function(){
+    music.play();
+    sessionStorage.setItem("musicPlaying", "true");
+  }, { once: true });
+});
