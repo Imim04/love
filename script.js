@@ -188,7 +188,9 @@ function heartExplosion(){
   }
 }
 function kissAndGo(){
-  const music = document.getElementById("bgMusic");
+  sessionStorage.clear();
+  window.location.replace("index.html");
+
 
   // หยุดเพลงก่อนกลับหน้า
   if(music){
